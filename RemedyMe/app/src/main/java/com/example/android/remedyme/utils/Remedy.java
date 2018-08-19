@@ -6,15 +6,16 @@ import java.util.Date;
 public class Remedy {
 
     private String remedy_name;
-    private Date start_date;
-    private DateFormat time_of_first_dose;
+    private int  start_date;
+    private int time_of_first_dose;
     private String times;
     private int quant_times;
     private String type_of_dose;
     private int quant_type_of_dose;
     private boolean alarmOn;
+    private int nextNotification;
 
-    public Remedy(String remedy_name, Date start_date, DateFormat time_of_first_dose, String times, int quant_times, String type_of_dose, int quant_type_of_dose, boolean alarmOn) {
+    public Remedy(String remedy_name, int start_date, int time_of_first_dose, String times, int quant_times, String type_of_dose, int quant_type_of_dose, boolean alarmOn) {
         this.remedy_name = remedy_name;
         this.start_date = start_date;
         this.time_of_first_dose = time_of_first_dose;
@@ -25,6 +26,19 @@ public class Remedy {
         this.alarmOn = alarmOn;
     }
 
+    public void setTime_of_first_dose(int time_of_first_dose) {
+        this.time_of_first_dose = time_of_first_dose;
+    }
+
+    public int getNextNotification() {
+        return nextNotification;
+    }
+
+    public void setNextNotification(int nextNotification) {
+        this.nextNotification = nextNotification;
+    }
+
+
     public String getRemedy_name() {
         return remedy_name;
     }
@@ -33,20 +47,12 @@ public class Remedy {
         this.remedy_name = remedy_name;
     }
 
-    public Date getStart_date() {
+    public int getStart_date() {
         return start_date;
     }
 
-    public void setStart_date(Date start_date) {
+    public void setStart_date(int start_date) {
         this.start_date = start_date;
-    }
-
-    public DateFormat getTime_of_first_dose() {
-        return time_of_first_dose;
-    }
-
-    public void setTime_of_first_dose(DateFormat time_of_first_dose) {
-        this.time_of_first_dose = time_of_first_dose;
     }
 
     public String getTimes() {
