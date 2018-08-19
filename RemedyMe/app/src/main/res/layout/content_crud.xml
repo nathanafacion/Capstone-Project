@@ -26,14 +26,14 @@
     <GridLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
     android:columnCount="2"
     android:orientation="horizontal"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
 
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="15dp"
 
         android:id="@+id/tv_l_remedy_name"
         android:layout_width="wrap_content"
@@ -43,7 +43,6 @@
         />
     <EditText
 
-        android:layout_marginTop="10dp"
         android:id="@+id/et_l_remedy_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -72,17 +71,21 @@
         <Button
             android:layout_marginTop="10dp"
             android:id="@+id/et_l_start_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:background="@color/colorPrimaryDark"
+            android:textColor="#FFF"
             android:onClick="openCalendarDialog"
              />
 
         <Button
             android:layout_marginTop="10dp"
             android:id="@+id/et_l_end_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
             android:onClick="openCalendarDialog"
+            android:background="@color/colorPrimaryDark"
+            android:textColor="#FFF"
             />
 
         <TextView
@@ -92,14 +95,17 @@
             android:layout_height="wrap_content"
             android:text="Time of First dose"
             android:layout_columnSpan="2"
+
              />
 
         <Button
             android:layout_marginTop="10dp"
             android:id="@+id/cb_first_dose_hour"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
             android:onClick="openTimePickerDialog"
+            android:background="@color/colorPrimaryDark"
+            android:textColor="#FFF"
            />
 
 
@@ -108,46 +114,56 @@
             android:id="@+id/tv_l_times"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Times"
+            android:text="Times and quantity"
             android:layout_columnSpan="2"
            />
 
         <Spinner
-            android:layout_marginTop="10dp"
             android:id="@+id/cb_option_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
            />
 
-        <Spinner
-            android:layout_marginTop="10dp"
+        <EditText
             android:id="@+id/cb_option_time_amount"
-            android:layout_width="wrap_content"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
+            android:text="1"
             />
 
     <TextView
-        android:layout_marginTop="10dp"
         android:id="@+id/tv_l_dose_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Type of dose"
+        android:text="Type of dose and quantity"
         android:layout_columnSpan="2"
         />
 
     <Spinner
-        android:layout_marginTop="10dp"
         android:id="@+id/cb_option_dose_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         />
 
-    <Spinner
-        android:layout_marginTop="10dp"
+    <EditText
         android:id="@+id/cb_option_dose_type_amount"
-        android:layout_width="wrap_content"
+        android:layout_width="30dp"
         android:layout_height="wrap_content"
+        android:text="1"
         />
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/tv_alarm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Notification with alarm"
+            android:layout_columnSpan="2"
+            />
+        <CheckBox android:id="@+id/cb_alarm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="On"
+            android:onClick="onCheckboxAlarmClicked"/>
 
         <Button
             android:layout_marginTop="10dp"
@@ -160,6 +176,8 @@
             >
 
         </Button>
+
+
 
 </GridLayout>
 </android.support.v7.widget.CardView>

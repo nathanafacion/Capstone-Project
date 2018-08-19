@@ -67,10 +67,10 @@ public class RemedyCrudActivity extends AppCompatActivity implements DatePickerD
         for (int i=0; i<12;i++) {
             items[i]=i;
         }
-        Spinner timesAmountSpinner = findViewById(R.id.cb_option_time_amount);
-        ArrayAdapter<Integer> timesAmountAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, items);
-        timesAmountAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        timesAmountSpinner.setAdapter(timesAmountAdapter);
+        //Spinner timesAmountSpinner = findViewById(R.id.cb_option_time_amount);
+        //ArrayAdapter<Integer> timesAmountAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, items);
+        //timesAmountAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //timesAmountSpinner.setAdapter(timesAmountAdapter);
         //*****
 
         //****Spinners pro "Type of dose"
@@ -81,16 +81,22 @@ public class RemedyCrudActivity extends AppCompatActivity implements DatePickerD
         typeOfDoseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerTypeOfDose.setAdapter(typeOfDoseAdapter);
         //Quantidade
-        items = new Integer[12];
-        for (int i=0; i<12;i++) {
-            items[i]=i;
-        }
-        Spinner spinnerTypeOfDoseType = findViewById(R.id.cb_option_dose_type_amount);
-        ArrayAdapter<Integer> typeOfDoseTypeAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, items);
-        typeOfDoseTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerTypeOfDoseType.setAdapter(typeOfDoseTypeAdapter);
+        //items = new Integer[12];
+        //for (int i=0; i<12;i++) {
+        //    items[i]=i;
+        //}
+        //Spinner spinnerTypeOfDoseType = findViewById(R.id.cb_option_dose_type_amount);
+        //ArrayAdapter<Integer> typeOfDoseTypeAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, items);
+        //typeOfDoseTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //spinnerTypeOfDoseType.setAdapter(typeOfDoseTypeAdapter);
         //*****
-
+        myCalendar = Calendar.getInstance();
+        selectedViewId = R.id.et_l_start_date;
+        updateCalendarLabel();
+        selectedViewId = R.id.et_l_end_date;
+        updateCalendarLabel();
+        selectedViewId = R.id.cb_first_dose_hour;
+        updateTimeLabel();
     }
 
     @Override

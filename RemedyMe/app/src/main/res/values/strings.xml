@@ -3,7 +3,7 @@
     <string name="action_settings">Settings</string>
     <string-array name="times_array">
         <item>Times per Day</item>
-        <item>Time Interval</item>
+        <item>Time Interval hour</item>
     </string-array>
     <string-array name="typeOfDose_array">
         <item>Pills</item>
