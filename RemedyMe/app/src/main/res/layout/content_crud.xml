@@ -74,6 +74,7 @@
             android:id="@+id/et_l_start_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="openCalendarDialog"
              />
 
         <Button
@@ -81,6 +82,7 @@
             android:id="@+id/et_l_end_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="openCalendarDialog"
             />
 
         <TextView
@@ -92,19 +94,13 @@
             android:layout_columnSpan="2"
              />
 
-        <Spinner
+        <Button
             android:layout_marginTop="10dp"
             android:id="@+id/cb_first_dose_hour"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="openTimePickerDialog"
            />
-
-        <Spinner
-            android:layout_marginTop="10dp"
-            android:id="@+id/cb_first_dose_min"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
 
 
         <TextView

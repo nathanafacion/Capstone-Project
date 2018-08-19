@@ -9,5 +9,5 @@
         <item>Pills</item>
         <item>ML</item>
     </string-array>
-
+    <string name="action_backup">Backup</string>
 </resources>

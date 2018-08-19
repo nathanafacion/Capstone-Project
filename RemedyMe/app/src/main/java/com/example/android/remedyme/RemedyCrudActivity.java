@@ -1,16 +1,30 @@
 package com.example.android.remedyme;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.Spinner;
+import android.widget.TimePicker;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 
-public class RemedyCrudActivity extends AppCompatActivity  {
+public class RemedyCrudActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener,
+        TimePickerDialog.OnTimeSetListener {
 
+    Calendar myCalendar = Calendar.getInstance();
+    int selectedViewId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,27 +32,28 @@ public class RemedyCrudActivity extends AppCompatActivity  {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //****Spinners pro "Time of first dose"
-        //Horas
-        Integer[] items = new Integer[12];
-        for (int i=0; i<12;i++) {
-            items[i]=i;
-        }
-        Spinner startHourSpinner = findViewById(R.id.cb_first_dose_hour);
-        ArrayAdapter<Integer> startHourAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, items);
-        startHourAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        startHourSpinner.setAdapter(startHourAdapter);
 
-        //Minutos
-        items = new Integer[60];
-        for (int i=0; i<60;i++) {
-            items[i]=i;
-        }
-        Spinner startMinuteSpinner = findViewById(R.id.cb_first_dose_min);
-        ArrayAdapter<Integer> startMinutesAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, items);
-        startMinutesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        startMinuteSpinner.setAdapter(startMinutesAdapter);
-        //****
+//        //****Spinners pro "Time of first dose"
+//        //Horas
+//        Integer[] items = new Integer[12];
+//        for (int i=0; i<12;i++) {
+//            items[i]=i;
+//        }
+//        Spinner startHourSpinner = findViewById(R.id.cb_first_dose_hour);
+//        ArrayAdapter<Integer> startHourAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, items);
+//        startHourAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        startHourSpinner.setAdapter(startHourAdapter);
+//
+//        //Minutos
+//        items = new Integer[60];
+//        for (int i=0; i<60;i++) {
+//            items[i]=i;
+//        }
+//        Spinner startMinuteSpinner = findViewById(R.id.cb_first_dose_min);
+//        ArrayAdapter<Integer> startMinutesAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, items);
+//        startMinutesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        startMinuteSpinner.setAdapter(startMinutesAdapter);
+//        //****
 
         //****Spinners pro "Times"
         //Times per Day - Time Interval
@@ -48,7 +63,7 @@ public class RemedyCrudActivity extends AppCompatActivity  {
         timesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerTimes.setAdapter(timesAdapter);
         //Quantidade
-        items = new Integer[12];
+        Integer[] items = new Integer[12];
         for (int i=0; i<12;i++) {
             items[i]=i;
         }
@@ -78,7 +93,6 @@ public class RemedyCrudActivity extends AppCompatActivity  {
 
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -94,11 +108,58 @@ public class RemedyCrudActivity extends AppCompatActivity  {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_backup) {
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    public void openCalendarDialog(View v) {
+        selectedViewId = v.getId();
+        myCalendar = Calendar.getInstance();
+        new DatePickerDialog(RemedyCrudActivity.this, this, myCalendar
+                .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+    }
+
+    private void updateCalendarLabel() {
+        String myFormat = "dd/MM/yyyy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, new Locale("pt","BR"));
+
+        ((Button) findViewById(selectedViewId)).setText(sdf.format(myCalendar.getTime()));
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        myCalendar.set(Calendar.YEAR, year);
+        myCalendar.set(Calendar.MONTH, month);
+        myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        updateCalendarLabel();
+    }
+
+    public void openTimePickerDialog(View v) {
+        selectedViewId = v.getId();
+        myCalendar = Calendar.getInstance();
+        int hour = myCalendar.get(Calendar.HOUR_OF_DAY);
+        int minute = myCalendar.get(Calendar.MINUTE);
+
+        // Create a new instance of TimePickerDialog and return it
+        new TimePickerDialog(this, this, hour, minute,
+               true).show();
+    }
+
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        myCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        myCalendar.set(Calendar.MINUTE, minute);
+        updateTimeLabel();
+    }
+
+    private void updateTimeLabel() {
+        String myFormat = "HH:mm"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, new Locale("pt","BR"));
+
+        ((Button) findViewById(selectedViewId)).setText(sdf.format(myCalendar.getTime()));
+    }
 }
