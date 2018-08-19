@@ -4,12 +4,7 @@ package com.example.android.remedyme.utils;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-import java.text.DateFormat;
-import java.util.Date;
-
 public class RemedyContract {
-
-
 
     public static final class RemedyEntry implements BaseColumns {
 
@@ -24,9 +19,9 @@ public class RemedyContract {
         /* Used internally as the name of our weather table. */
         public static final String TABLE_NAME = "remedies";
 
-        public static final String COLUMN_ID_REMEDY = "id_remedy";
         public static final String COLUMN_REMEDY_NAME ="remedy_name";
         public static final String COLUMN_START_DATE = "start_date";
+        public static final String COLUMN_END_DATE = "end_date";
         public static final String COLUMN_TIME_OF_FIRST_DOSE = "time_of_first_dose";
         public static final String COLUMN_TIMES= "times";
         public static final String COLUMN_QUANT_TIMES = "quant_times";

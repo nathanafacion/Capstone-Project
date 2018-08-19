@@ -1,13 +1,11 @@
 package com.example.android.remedyme.utils;
 
-import java.text.DateFormat;
-import java.util.Date;
-
 public class Remedy {
 
     private String remedy_name;
-    private int  start_date;
-    private int time_of_first_dose;
+    private long start_date;
+    private long end_date;
+    private long time_of_first_dose;
     private String times;
     private int quant_times;
     private String type_of_dose;
@@ -15,9 +13,11 @@ public class Remedy {
     private boolean alarmOn;
     private int nextNotification;
 
-    public Remedy(String remedy_name, int start_date, int time_of_first_dose, String times, int quant_times, String type_of_dose, int quant_type_of_dose, boolean alarmOn) {
+    public Remedy(String remedy_name, long start_date, long end_date, long time_of_first_dose, String times,
+                  int quant_times, String type_of_dose, int quant_type_of_dose, boolean alarmOn) {
         this.remedy_name = remedy_name;
         this.start_date = start_date;
+        this.end_date = end_date;
         this.time_of_first_dose = time_of_first_dose;
         this.times = times;
         this.quant_times = quant_times;
@@ -30,6 +30,10 @@ public class Remedy {
         this.time_of_first_dose = time_of_first_dose;
     }
 
+    public long getTime_of_first_dose() {
+        return time_of_first_dose;
+    }
+
     public int getNextNotification() {
         return nextNotification;
     }
@@ -37,7 +41,6 @@ public class Remedy {
     public void setNextNotification(int nextNotification) {
         this.nextNotification = nextNotification;
     }
-
 
     public String getRemedy_name() {
         return remedy_name;
@@ -47,12 +50,20 @@ public class Remedy {
         this.remedy_name = remedy_name;
     }
 
-    public int getStart_date() {
+    public long getStart_date() {
         return start_date;
     }
 
     public void setStart_date(int start_date) {
         this.start_date = start_date;
+    }
+
+    public long getEnd_date() {
+        return end_date;
+    }
+
+    public void setEnd_date(int end_date) {
+        this.end_date = end_date;
     }
 
     public String getTimes() {
