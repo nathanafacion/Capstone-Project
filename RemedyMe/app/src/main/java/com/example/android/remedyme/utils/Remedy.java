@@ -1,5 +1,12 @@
 package com.example.android.remedyme.utils;
 
+import android.widget.Button;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Vector;
+
 public class Remedy {
 
     private String remedy_name;
@@ -104,6 +111,43 @@ public class Remedy {
 
     public void setAlarmOn(boolean alarmOn) {
         this.alarmOn = alarmOn;
+    }
+
+    public String dateToString(Date date) {
+        String myFormat = "HH:mm"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, new Locale("pt","BR"));
+        return sdf.format(date.getTime());
+
+    }
+
+    public Integer hourToInteger() {
+        String myFormat = "HH"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, new Locale("pt","BR"));
+        return Integer.valueOf(sdf.format(getNextNotification()));
+
+    }
+
+    public Integer minuteToInteger() {
+        String myFormat = "mm"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, new Locale("pt","BR"));
+        return Integer.valueOf(sdf.format(getNextNotification()));
+
+    }
+
+    public Vector<Integer> nextDose(){
+        int quantDose = 3;
+        Vector<Integer> hours = new Vector(quantDose);
+        Integer firstDose =  hourToInteger();
+        // interval vai ser usado apenas caso seja
+        int interval = 24 % getQuant_times();
+        for(int i= 0; i<quantDose ; i++) {
+            if (getTimes().equals("Time Interval hour")) {
+                hours.add((firstDose + getQuant_times()) % 24);
+            } else {
+                hours.add((firstDose + interval) % 24);
+            }
+        }
+        return hours;
     }
 
 }

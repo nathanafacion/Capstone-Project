@@ -24,7 +24,9 @@ import com.example.android.remedyme.utils.Remedy;
 import com.example.android.remedyme.utils.RemedyContract;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Vector;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -106,8 +108,23 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull RemedyViewHolder holder, int position) {
             Remedy remedy = remediesData.get(position);
-            holder.titleView.setText(remedy.getRemedy_name());
-            holder.tv_next_times.setText(remedy.getRemedy_name() + " " + remedy.getType_of_dose());
+            holder.titleView.setText( remedy.dateToString(new Date(remedy.getNextNotification()))+ " " + remedy.getRemedy_name() +" ("+ remedy.getQuant_type_of_dose()+ remedy.getType_of_dose() +")");
+            Vector<Integer> nextDose = remedy.nextDose();
+            String minutes = String.valueOf(remedy.minuteToInteger());
+            String formatMinutes = "";
+            formatMinutes = minutes.length() < 2 ? "0" + minutes : "" + minutes;
+            String time = "";
+            String and = " | ";
+            String formatHours = "";
+
+            for(int i=0; i<3; i++){
+                formatHours = nextDose.get(i) < 9 ? "0":"";
+                time = time + String.valueOf(formatHours + nextDose.get(i)) + ":" + formatMinutes;
+                if ( i + 1 < 3){
+                    time = time + and;
+                }
+            }
+        holder.tv_next_times.setText("Next doses: "+ time);
 
         }
 
