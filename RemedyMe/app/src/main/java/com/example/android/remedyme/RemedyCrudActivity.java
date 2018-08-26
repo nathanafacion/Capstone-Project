@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -17,6 +18,7 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -41,7 +43,10 @@ public class RemedyCrudActivity extends AppCompatActivity implements DatePickerD
     long firstDoseTime;
     boolean isEditing = false;
     Remedy remedy;
-
+    @BindView(R.id.tv_l_dose_type) TextView tv_dose_type;
+    @BindView(R.id.tv_l_times) TextView tv_times;
+    @BindView(R.id.tv_l_end_date) TextView tv_end_date;
+    @BindView(R.id.tv_l_remedy_name) TextView tv_remedyName;
     @BindView(R.id.et_l_remedy_name) EditText remedyName;
     @BindView(R.id.et_l_start_date) Button startDateButton;
     @BindView(R.id.et_l_end_date) Button endDateButton;
@@ -109,21 +114,29 @@ public class RemedyCrudActivity extends AppCompatActivity implements DatePickerD
 
     public boolean validation(){
         boolean hasError = false;
+        tv_remedyName.setTextColor(Color.parseColor("#000000"));
+        tv_times.setTextColor(Color.parseColor("#000000"));
+        tv_dose_type.setTextColor(Color.parseColor("#000000"));
+        tv_end_date.setTextColor(Color.parseColor("#000000"));
         if(remedyName.getText().toString().isEmpty()){
             Toast.makeText(getApplicationContext(), "Remedy Name should not be empty", Toast.LENGTH_SHORT).show();
+            tv_remedyName.setTextColor(Color.parseColor("#FF0000"));
             return false;
         }
         if(Integer.valueOf(optionTimeAmount.getText().toString()) > 24 || Integer.valueOf(optionTimeAmount.getText().toString()) < 1){
             Toast.makeText(getApplicationContext(), "Time quantity should be between 1 and 24", Toast.LENGTH_SHORT).show();
+            tv_times.setTextColor(Color.parseColor("#FF0000"));
             return false;
         }
-        if(Integer.valueOf(doseTypeAmount.getText().toString()) < 0){
+        if(Integer.valueOf(doseTypeAmount.getText().toString()) < 1){
             Toast.makeText(getApplicationContext(), "Time quantity should be less than 24", Toast.LENGTH_SHORT).show();
+            tv_dose_type.setTextColor(Color.parseColor("#FF0000"));
             return false;
         }
         Date now =  new Date();
         if(startDate > endDate){
             Toast.makeText(getApplicationContext(), "Date Start should before than end date", Toast.LENGTH_SHORT).show();
+            tv_end_date.setTextColor(Color.parseColor("#FF0000"));
             return false;
         }
         return true;
