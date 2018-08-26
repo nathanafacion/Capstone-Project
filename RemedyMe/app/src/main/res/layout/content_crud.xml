@@ -127,6 +127,7 @@
             android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:text="1"
+            android:inputType="number"
             />
 
     <TextView
@@ -148,6 +149,7 @@
         android:layout_width="30dp"
         android:layout_height="wrap_content"
         android:text="1"
+        android:inputType="number"
         />
         <TextView
             android:layout_marginTop="10dp"

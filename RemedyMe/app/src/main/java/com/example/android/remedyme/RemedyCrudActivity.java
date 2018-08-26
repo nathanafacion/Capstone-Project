@@ -113,8 +113,8 @@ public class RemedyCrudActivity extends AppCompatActivity implements DatePickerD
             Toast.makeText(getApplicationContext(), "Remedy Name should not be empty", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if(Integer.valueOf(optionTimeAmount.getText().toString()) > 24){
-            Toast.makeText(getApplicationContext(), "Time quantity should be less than 24", Toast.LENGTH_SHORT).show();
+        if(Integer.valueOf(optionTimeAmount.getText().toString()) > 24 || Integer.valueOf(optionTimeAmount.getText().toString()) < 1){
+            Toast.makeText(getApplicationContext(), "Time quantity should be between 1 and 24", Toast.LENGTH_SHORT).show();
             return false;
         }
         if(Integer.valueOf(doseTypeAmount.getText().toString()) < 0){
