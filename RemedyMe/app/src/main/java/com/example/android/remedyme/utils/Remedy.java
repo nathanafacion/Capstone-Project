@@ -1,14 +1,16 @@
 package com.example.android.remedyme.utils;
 
-import android.widget.Button;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Vector;
 
-public class Remedy {
+public class Remedy implements Parcelable {
 
+    private int _ID;
     private String remedy_name;
     private long start_date;
     private long end_date;
@@ -20,8 +22,9 @@ public class Remedy {
     private boolean alarmOn;
     private int nextNotification;
 
-    public Remedy(String remedy_name, long start_date, long end_date, long time_of_first_dose, String times,
+    public Remedy(int id, String remedy_name, long start_date, long end_date, long time_of_first_dose, String times,
                   int quant_times, String type_of_dose, int quant_type_of_dose, boolean alarmOn) {
+        this._ID = id;
         this.remedy_name = remedy_name;
         this.start_date = start_date;
         this.end_date = end_date;
@@ -31,6 +34,23 @@ public class Remedy {
         this.type_of_dose = type_of_dose;
         this.quant_type_of_dose = quant_type_of_dose;
         this.alarmOn = alarmOn;
+    }
+
+    protected Remedy(Parcel in) {
+        _ID = in.readInt();
+        remedy_name = in.readString();
+        start_date = in.readLong();
+        end_date = in.readLong();
+        time_of_first_dose = in.readLong();
+        times = in.readString();
+        quant_times = in.readInt();
+        type_of_dose = in.readString();
+        quant_type_of_dose = in.readInt();
+        alarmOn = in.readInt() == 1 ? Boolean.TRUE : Boolean.FALSE;
+    }
+
+    public int getId() {
+        return _ID;
     }
 
     public void setTime_of_first_dose(int time_of_first_dose) {
@@ -115,32 +135,58 @@ public class Remedy {
 
     public String dateToString(Date date) {
         String myFormat = "HH:mm"; //In which you need put here
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, new Locale("pt","BR"));
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, new Locale("pt", "BR"));
         return sdf.format(date.getTime());
+    }
 
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public Integer hourToInteger() {
         String myFormat = "HH"; //In which you need put here
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, new Locale("pt","BR"));
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, new Locale("pt", "BR"));
         return Integer.valueOf(sdf.format(getNextNotification()));
+    }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(_ID);
+        dest.writeString(remedy_name);
+        dest.writeLong(start_date);
+        dest.writeLong(end_date);
+        dest.writeLong(time_of_first_dose);
+        dest.writeString(times);
+        dest.writeInt(quant_times);
+        dest.writeString(type_of_dose);
+        dest.writeInt(quant_type_of_dose);
+        dest.writeInt(alarmOn ? 1:0);
     }
 
     public Integer minuteToInteger() {
         String myFormat = "mm"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, new Locale("pt","BR"));
         return Integer.valueOf(sdf.format(getNextNotification()));
-
     }
 
-    public Vector<Integer> nextDose(){
+    public static final Creator<Remedy> CREATOR = new Creator<Remedy>() {
+        public Remedy createFromParcel(Parcel in) {
+            return new Remedy(in);
+        }
+
+        public Remedy[] newArray(int size) {
+            return new Remedy[size];
+        }
+    };
+
+    public Vector<Integer> nextDose() {
         int quantDose = 3;
         Vector<Integer> hours = new Vector(quantDose);
-        Integer firstDose =  hourToInteger();
-        // interval vai ser usado apenas caso seja
+        Integer firstDose = hourToInteger();
+        // interval vai ser usado apenas caso seja para tomar quantas vezes ao dia
         int interval = 24 % getQuant_times();
-        for(int i= 0; i<quantDose ; i++) {
+        for (int i = 0; i < quantDose; i++) {
             if (getTimes().equals("Time Interval hour")) {
                 hours.add((firstDose + getQuant_times()) % 24);
             } else {
@@ -149,5 +195,4 @@ public class Remedy {
         }
         return hours;
     }
-
 }

@@ -13,11 +13,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.android.remedyme.utils.Remedy;
@@ -27,9 +28,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -107,15 +105,15 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull RemedyViewHolder holder, int position) {
-            Remedy remedy = remediesData.get(position);
+            final Remedy remedy = remediesData.get(position);
             holder.titleView.setText( remedy.dateToString(new Date(remedy.getNextNotification()))+ " " + remedy.getRemedy_name() +" ("+ remedy.getQuant_type_of_dose()+ remedy.getType_of_dose() +")");
             Vector<Integer> nextDose = remedy.nextDose();
             String minutes = String.valueOf(remedy.minuteToInteger());
-            String formatMinutes = "";
+            String formatMinutes;
             formatMinutes = minutes.length() < 2 ? "0" + minutes : "" + minutes;
             String time = "";
             String and = " | ";
-            String formatHours = "";
+            String formatHours;
 
             for(int i=0; i<3; i++){
                 formatHours = nextDose.get(i) < 9 ? "0":"";
@@ -124,8 +122,32 @@ public class MainActivity extends AppCompatActivity {
                     time = time + and;
                 }
             }
-        holder.tv_next_times.setText("Next doses: "+ time);
-
+            holder.tv_next_times.setText("Next doses: "+ time);
+            holder.editButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(view.getContext(), RemedyCrudActivity.class);
+                    intent.putExtra("remedy", remedy);
+                    view.getContext().startActivity(intent);
+                }
+            });
+            holder.deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                   ContentResolver contentResolver = view.getContext().getContentResolver();
+                   int result = contentResolver.delete(
+                           RemedyContract.RemedyEntry.CONTENT_URI,
+                           RemedyContract.RemedyEntry._ID + " = ? ",
+                           new String[]{String.valueOf(remedy.getId())}
+                   );
+                   if (result > 0) {
+                       remediesData.remove(remedy);
+                       notifyDataSetChanged();
+                   } else {
+                       Log.e(MainActivity.class.getName(), "Erro ao remover entrada: ");
+                   }
+                }
+            });
         }
 
         @Override
@@ -143,12 +165,16 @@ public class MainActivity extends AppCompatActivity {
 
         public TextView titleView;
         public TextView tv_next_times;
+        public ImageButton editButton;
+        public ImageButton deleteButton;
 
         public RemedyViewHolder(View view) {
             super(view);
             titleView = view.findViewById(R.id.tv_title);
             tv_next_times = view.findViewById(R.id.tv_next_times);
             titleView.setTypeface(null, Typeface.BOLD);
+            editButton = view.findViewById(R.id.bt_edit);
+            deleteButton = view.findViewById(R.id.bt_del);
         }
     }
 
@@ -168,6 +194,7 @@ public class MainActivity extends AppCompatActivity {
             if (c != null && c.getCount() > 0) {
                 c.moveToFirst();
                 do {
+                    int remedy_id = c.getInt(0);
                     String remedy_name = c.getString(1);
                     long start_date = c.getInt(2);
                     long end_date = c.getInt(3);
@@ -178,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
                     int quant_type_of_dose = c.getInt(8);
                     boolean alarmOn = Boolean.TRUE.equals(c.getInt(9));
 
-                    Remedy remedy = new Remedy(remedy_name, start_date, end_date, time_of_first_dose, times,
+                    Remedy remedy = new Remedy(remedy_id, remedy_name, start_date, end_date, time_of_first_dose, times,
                             quant_times, type_of_dose, quant_type_of_dose, alarmOn);
                     remedies.add(remedy);
                 } while (c.moveToNext());
