@@ -1,7 +1,10 @@
 package com.example.android.remedyme;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Typeface;
@@ -9,11 +12,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +26,7 @@ import android.widget.TextView;
 
 import com.example.android.remedyme.utils.Remedy;
 import com.example.android.remedyme.utils.RemedyContract;
+import com.example.android.remedyme.widget.RemedyWidgetProvider;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -88,6 +92,15 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void updateWidget(List<Remedy> remediesData) {
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(this, RemedyWidgetProvider.class));
+        //Trigger data update to handle the GridView widgets and force a data refresh
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.recipe_widget_layout);
+        //Now update all widgets
+        RemedyWidgetProvider.updateRemediesWidget(this, appWidgetManager, remediesData, appWidgetIds);
+    }
+
     private class RemedyAdapter extends RecyclerView.Adapter<RemedyViewHolder> {
 
         List<Remedy> remediesData;
@@ -114,13 +127,17 @@ public class MainActivity extends AppCompatActivity {
             String time = "";
             String and = " | ";
             String formatHours;
+            int quant_times = remedy.getQuant_times() > 3 ? 3 : remedy.getQuant_times();
 
-            for(int i=0; i<3; i++){
+            for(int i = 0; i < quant_times; i++){
                 formatHours = nextDose.get(i) < 9 ? "0":"";
                 time = time + String.valueOf(formatHours + nextDose.get(i)) + ":" + formatMinutes;
-                if ( i + 1 < 3){
+                if ( i + 1 < quant_times){
                     time = time + and;
                 }
+            }
+            if (quant_times == 1) {
+                time = "Tomorrow " + time;
             }
             holder.tv_next_times.setText("Next doses: "+ time);
             holder.editButton.setOnClickListener(new View.OnClickListener() {
@@ -133,19 +150,26 @@ public class MainActivity extends AppCompatActivity {
             });
             holder.deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
-                   ContentResolver contentResolver = view.getContext().getContentResolver();
-                   int result = contentResolver.delete(
-                           RemedyContract.RemedyEntry.CONTENT_URI,
-                           RemedyContract.RemedyEntry._ID + " = ? ",
-                           new String[]{String.valueOf(remedy.getId())}
-                   );
-                   if (result > 0) {
-                       remediesData.remove(remedy);
-                       notifyDataSetChanged();
-                   } else {
-                       Log.e(MainActivity.class.getName(), "Erro ao remover entrada: ");
-                   }
+                public void onClick(final View view) {
+                    new AlertDialog.Builder(view.getContext())
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .setTitle("Removing remedy")
+                            .setMessage("Are you sure you want to remove this remedy from the list ?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    ContentResolver contentResolver = view.getContext().getContentResolver();
+                                    contentResolver.delete(RemedyContract.RemedyEntry.CONTENT_URI,
+                                            RemedyContract.RemedyEntry._ID + " = ? ",
+                                            new String[]{String.valueOf(remedy.getId())});
+                                    remediesData.remove(remedy);
+                                    notifyDataSetChanged();
+                                }
+
+                            })
+                            .setNegativeButton("No", null)
+                            .show();
                 }
             });
         }
@@ -155,8 +179,9 @@ public class MainActivity extends AppCompatActivity {
             return remediesData.size();
         }
 
-        public void setRemediesData(List<Remedy> remediesData) {
+        private void setRemediesData(List<Remedy> remediesData) {
             this.remediesData = remediesData;
+            updateWidget(remediesData);
             notifyDataSetChanged();
         }
     }
@@ -196,17 +221,18 @@ public class MainActivity extends AppCompatActivity {
                 do {
                     int remedy_id = c.getInt(0);
                     String remedy_name = c.getString(1);
-                    long start_date = c.getInt(2);
-                    long end_date = c.getInt(3);
+                    long start_date = c.getLong(2);
+                    long end_date = c.getLong(3);
                     long time_of_first_dose = c.getLong(4);
                     String times = c.getString(5);
                     String type_of_dose = c.getString(6);
                     int quant_times = c.getInt(7);
                     int quant_type_of_dose = c.getInt(8);
                     boolean alarmOn = Boolean.TRUE.equals(c.getInt(9));
+                    long nextNotification = c.getLong(10);
 
                     Remedy remedy = new Remedy(remedy_id, remedy_name, start_date, end_date, time_of_first_dose, times,
-                            quant_times, type_of_dose, quant_type_of_dose, alarmOn);
+                            quant_times, type_of_dose, quant_type_of_dose, alarmOn, nextNotification);
                     remedies.add(remedy);
                 } while (c.moveToNext());
             }
@@ -219,5 +245,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
 
 }

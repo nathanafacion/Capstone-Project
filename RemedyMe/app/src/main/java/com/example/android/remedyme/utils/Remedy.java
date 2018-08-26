@@ -20,10 +20,10 @@ public class Remedy implements Parcelable {
     private String type_of_dose;
     private int quant_type_of_dose;
     private boolean alarmOn;
-    private int nextNotification;
+    private long nextNotification;
 
     public Remedy(int id, String remedy_name, long start_date, long end_date, long time_of_first_dose, String times,
-                  int quant_times, String type_of_dose, int quant_type_of_dose, boolean alarmOn) {
+                  int quant_times, String type_of_dose, int quant_type_of_dose, boolean alarmOn, long nextNotification) {
         this._ID = id;
         this.remedy_name = remedy_name;
         this.start_date = start_date;
@@ -34,6 +34,7 @@ public class Remedy implements Parcelable {
         this.type_of_dose = type_of_dose;
         this.quant_type_of_dose = quant_type_of_dose;
         this.alarmOn = alarmOn;
+        this.nextNotification = nextNotification;
     }
 
     protected Remedy(Parcel in) {
@@ -47,6 +48,7 @@ public class Remedy implements Parcelable {
         type_of_dose = in.readString();
         quant_type_of_dose = in.readInt();
         alarmOn = in.readInt() == 1 ? Boolean.TRUE : Boolean.FALSE;
+        nextNotification = in.readLong();
     }
 
     public int getId() {
@@ -61,7 +63,7 @@ public class Remedy implements Parcelable {
         return time_of_first_dose;
     }
 
-    public int getNextNotification() {
+    public long getNextNotification() {
         return nextNotification;
     }
 
@@ -162,6 +164,7 @@ public class Remedy implements Parcelable {
         dest.writeString(type_of_dose);
         dest.writeInt(quant_type_of_dose);
         dest.writeInt(alarmOn ? 1:0);
+        dest.writeLong(nextNotification);
     }
 
     public Integer minuteToInteger() {
@@ -181,17 +184,20 @@ public class Remedy implements Parcelable {
     };
 
     public Vector<Integer> nextDose() {
-        int quantDose = 3;
+        int quantTimes = getQuant_times();
+        int quantDose = quantTimes < 3 ? quantTimes : 3;
         Vector<Integer> hours = new Vector(quantDose);
-        Integer firstDose = hourToInteger();
-        // interval vai ser usado apenas caso seja para tomar quantas vezes ao dia
-        int interval = 24 % getQuant_times();
+        Integer nextDose = hourToInteger();
+        // interval vai ser usado apenas caso seja
+        int interval = 24 % quantTimes;
+        boolean isHourInterval = getTimes().equals("Time Interval hour");
         for (int i = 0; i < quantDose; i++) {
-            if (getTimes().equals("Time Interval hour")) {
-                hours.add((firstDose + getQuant_times()) % 24);
+            if (isHourInterval) {
+                nextDose = nextDose + getQuant_times();
             } else {
-                hours.add((firstDose + interval) % 24);
+                nextDose += interval;
             }
+            hours.add(nextDose % 24);
         }
         return hours;
     }
