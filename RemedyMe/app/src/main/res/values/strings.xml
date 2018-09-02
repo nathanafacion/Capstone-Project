@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name"></string>
+    <string name="app_name">RemedyMe</string>
     <string name="action_settings">Settings</string>
     <string-array name="times_array">
         <item>Times per Day</item>
@@ -12,4 +12,5 @@
     <string name="action_backup">Backup</string>
     <string name="content_authority">com.example.android.remedyme</string>
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="credencial">309990967220-me2e3g3u225f12i68h1rbsm5u3hd7u8h.apps.googleusercontent.com</string>
 </resources>

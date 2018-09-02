@@ -1,6 +1,8 @@
 package com.example.android.remedyme;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -169,6 +171,22 @@ public class RemedyCrudActivity extends AppCompatActivity implements DatePickerD
                 contentResolver.insert(
                         RemedyContract.RemedyEntry.CONTENT_URI, cv);
             }
+
+            if (alarmOn.isChecked()) {
+                AlarmManager alarmManager;
+                PendingIntent pendingIntent;
+
+                Intent myIntent = new Intent(this, AlarmReceiver.class);
+                pendingIntent = PendingIntent.getBroadcast(getBaseContext(), 0, myIntent, 0);
+
+                Calendar calendar = Calendar.getInstance();
+//                calendar.setTimeInMillis(startDate + firstDoseTime);
+
+                alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() + 10000,
+                        10000, pendingIntent);
+            }
+
             Intent intent = new Intent(view.getContext(), MainActivity.class);
             view.getContext().startActivity(intent);
         }
