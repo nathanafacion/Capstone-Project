@@ -64,6 +64,7 @@ public class RemedyCrudActivity extends AppCompatActivity implements DatePickerD
         super.onCreate(savedInstanceState);
         setContentView(R.layout.remedy_crud);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
         ButterKnife.bind(this);
@@ -183,8 +184,7 @@ public class RemedyCrudActivity extends AppCompatActivity implements DatePickerD
 //                calendar.setTimeInMillis(startDate + firstDoseTime);
 
                 alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() + 10000,
-                        10000, pendingIntent);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() + 10000, pendingIntent);
             }
 
             Intent intent = new Intent(view.getContext(), MainActivity.class);

@@ -11,36 +11,41 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
 
+import java.sql.Time;
+import java.util.Calendar;
+
 public class AlarmReceiver extends WakefulBroadcastReceiver {
+
 
     @Override
     public void onReceive(final Context context, Intent intent) {
-        sendNotification(context);
-        setResultCode(Activity.RESULT_OK);
 
-    }
+        Intent mainActivityIntent = new Intent(context, MainActivity.class);
+        mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-    private void sendNotification(Context context) {
-        Log.d("AlarmService", "Preparing to send notification...: " );
-
-        Intent intent = new Intent(context, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0 /* Request code */, intent,
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0 /* Request code */, mainActivityIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, "REMEDY_ME_WITH_SOUND");
         Uri alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, "REMEDY_ME")
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("Alarm")
-                .setContentText("Hora de tomar remedio")
+        notificationBuilder.setSound(alarmUri).setContentText("Vamos tomar remÃ©dio");
+
+        notificationBuilder.setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("Alarme")
+                .setContentText("Hora de tomar remÃ©dio")
                 .setAutoCancel(true)
-                .setSound(alarmUri)
                 .setContentIntent(pendingIntent);
 
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        int timeInMillis = (int) Calendar.getInstance().getTimeInMillis();
+
+        notificationManager.notify(timeInMillis /* ID of notification */, notificationBuilder.build());
 
         Log.d("AlarmService", "Notification sent.");
+
+        setResultCode(Activity.RESULT_OK);
+
     }
 }
