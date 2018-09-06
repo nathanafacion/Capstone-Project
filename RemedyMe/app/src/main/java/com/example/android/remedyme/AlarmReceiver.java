@@ -28,11 +28,11 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, "REMEDY_ME_WITH_SOUND");
         Uri alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-        notificationBuilder.setSound(alarmUri).setContentText("Vamos tomar remÃ©dio");
+        notificationBuilder.setSound(alarmUri).setContentText("Vamos tomar remédio");
 
         notificationBuilder.setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("Alarme")
-                .setContentText("Hora de tomar remÃ©dio")
+                .setContentText("Hora de tomar remédio")
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent);
 

@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.example.android.remedyme.utils.Remedy;
 import com.example.android.remedyme.utils.RemedyContract;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -181,10 +182,10 @@ public class RemedyCrudActivity extends AppCompatActivity implements DatePickerD
                 pendingIntent = PendingIntent.getBroadcast(getBaseContext(), 0, myIntent, 0);
 
                 Calendar calendar = Calendar.getInstance();
-//                calendar.setTimeInMillis(startDate + firstDoseTime);
 
                 alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() + 10000, pendingIntent);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() + 10000,
+                        pendingIntent);
             }
 
             Intent intent = new Intent(view.getContext(), MainActivity.class);
@@ -207,7 +208,10 @@ public class RemedyCrudActivity extends AppCompatActivity implements DatePickerD
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_backup) {
+        if (id == R.id.action_logout) {
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
             return true;
         }
 

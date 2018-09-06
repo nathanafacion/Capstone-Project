@@ -26,12 +26,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.remedyme.utils.Remedy;
 import com.example.android.remedyme.utils.RemedyContract;
 import com.example.android.remedyme.widget.RemedyWidgetProvider;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -40,30 +42,33 @@ import java.util.Vector;
 
 public class MainActivity extends AppCompatActivity {
 
-    RecyclerView rv;
+     RecyclerView rv;
     public static RemedyAdapter adapter;
-    public static Context mainContext;
 
     private static List<Remedy> remediesList = new ArrayList<Remedy>();
-
-
+    public static String userEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         loadRemediesData(getApplicationContext());
 
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            userEmail = extras.get("user").toString();
+        }
+
         adapter = new RemedyAdapter(this, remediesList);
 
-        rv = (RecyclerView) findViewById(R.id.recycler_view);
+        rv = findViewById(R.id.recycler_view);
         rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(this));
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -102,7 +107,10 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_backup) {
+        if (id == R.id.action_logout) {
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
             return true;
         }
 

@@ -10,7 +10,8 @@
         <item>ML</item>
     </string-array>
     <string name="action_backup">Backup</string>
+    <string name="action_logout">Logout</string>
     <string name="content_authority">com.example.android.remedyme</string>
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="credencial">1070205168551-4ajotode217fj4l16fhrcphhfov6vtan.apps.googleusercontent.com</string>
+    <string name="credencial">309990967220-kktj83j03it101ginf29t7t17bt9ft6n.apps.googleusercontent.com</string>
 </resources>
