@@ -26,7 +26,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.android.remedyme.utils.Remedy;
 import com.example.android.remedyme.utils.RemedyContract;
@@ -42,7 +41,7 @@ import java.util.Vector;
 
 public class MainActivity extends AppCompatActivity {
 
-     RecyclerView rv;
+    RecyclerView rv;
     public static RemedyAdapter adapter;
     public static Context context;
     private static List<Remedy> remediesList = new ArrayList<Remedy>();
@@ -142,9 +141,10 @@ public class MainActivity extends AppCompatActivity {
     private class RemedyAdapter extends RecyclerView.Adapter<RemedyViewHolder> {
 
         List<Remedy> remediesData;
-
-        public RemedyAdapter(@NonNull Context context, @NonNull List<Remedy> objects) {
+        private Context context;
+        private RemedyAdapter(@NonNull Context context, @NonNull List<Remedy> objects) {
             remediesData = objects;
+            this.context = context;
         }
 
         @NonNull
@@ -157,7 +157,9 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull RemedyViewHolder holder, int position) {
             final Remedy remedy = remediesData.get(position);
-            holder.titleView.setText( remedy.dateToString(new Date(remedy.getNextNotification()))+ " " + remedy.getRemedy_name() +" ("+ remedy.getQuant_type_of_dose()+ remedy.getType_of_dose() +")");
+            String text = remedy.dateToString(new Date(remedy.getNextNotification()))+ " " + remedy.getRemedy_name() +" ("+ remedy.getQuant_type_of_dose()+ remedy.getType_of_dose() +")";
+            holder.titleView.setText(text);
+            holder.titleView.setContentDescription(text);
             Vector<Integer> nextDose = remedy.nextDose();
             String minutes = String.valueOf(remedy.minuteToInteger());
             String formatMinutes;
@@ -177,7 +179,9 @@ public class MainActivity extends AppCompatActivity {
             if (quant_times == 1) {
                 time = getResources().getString(R.string.msg_tomorrow) + time;
             }
-            holder.tv_next_times.setText(getResources().getString(R.string.msg_next_doses)+ time);
+            String msgNextDoses = getResources().getString(R.string.msg_next_doses);
+            msgNextDoses = msgNextDoses.replace("{?}", time);
+            holder.tv_next_times.setText(msgNextDoses);
             holder.editButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -186,13 +190,15 @@ public class MainActivity extends AppCompatActivity {
                     view.getContext().startActivity(intent);
                 }
             });
+            final String deleteMessage = context.getResources().getString(R.string.msg_remove_remedy);
+            deleteMessage.replace("{x}", remedy.getRemedy_name());
             holder.deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View view) {
                     new AlertDialog.Builder(view.getContext())
                             .setIcon(android.R.drawable.ic_dialog_alert)
                             .setTitle(getResources().getString(R.string.notification_title_remove_remedy))
-                            .setMessage(getResources().getString(R.string.msg_remove_remedy))
+                            .setMessage(deleteMessage)
                             .setPositiveButton(getResources().getString(R.string.msg_yes), new DialogInterface.OnClickListener()
                             {
                                 @Override
@@ -246,35 +252,36 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected List<Remedy> doInBackground(Context... contexts) {
             ContentResolver contentResolver = contexts[0].getContentResolver();
-            Cursor c = contentResolver.query(
+            try (Cursor c = contentResolver.query(
                     RemedyContract.RemedyEntry.CONTENT_URI,
                     null,
                     null,
                     null,
-                    null);
+                    RemedyContract.RemedyEntry.COLUMN_NEXT_NOTIFICATION + " ASC")) {
 
-            List<Remedy> remedies = new ArrayList<Remedy>();
-            if (c != null && c.getCount() > 0) {
-                c.moveToFirst();
-                do {
-                    int remedy_id = c.getInt(0);
-                    String remedy_name = c.getString(1);
-                    long start_date = c.getLong(2);
-                    long end_date = c.getLong(3);
-                    long time_of_first_dose = c.getLong(4);
-                    String times = c.getString(5);
-                    String type_of_dose = c.getString(6);
-                    int quant_times = c.getInt(7);
-                    int quant_type_of_dose = c.getInt(8);
-                    boolean alarmOn = Boolean.TRUE.equals(c.getInt(9));
-                    long nextNotification = c.getLong(10);
+                List<Remedy> remedies = new ArrayList<Remedy>();
+                if (c != null && c.getCount() > 0) {
+                    c.moveToFirst();
+                    do {
+                        int remedy_id = c.getInt(0);
+                        String remedy_name = c.getString(1);
+                        long start_date = c.getLong(2);
+                        long end_date = c.getLong(3);
+                        long time_of_first_dose = c.getLong(4);
+                        String times = c.getString(5);
+                        String type_of_dose = c.getString(6);
+                        int quant_times = c.getInt(7);
+                        int quant_type_of_dose = c.getInt(8);
+                        boolean alarmOn = Boolean.TRUE.equals(c.getInt(9));
+                        long nextNotification = c.getLong(10);
 
-                    Remedy remedy = new Remedy(remedy_id, remedy_name, start_date, end_date, time_of_first_dose, times,
-                            quant_times, type_of_dose, quant_type_of_dose, alarmOn, nextNotification);
-                    remedies.add(remedy);
-                } while (c.moveToNext());
+                        Remedy remedy = new Remedy(remedy_id, remedy_name, start_date, end_date, time_of_first_dose, times,
+                                quant_times, type_of_dose, quant_type_of_dose, alarmOn, nextNotification);
+                        remedies.add(remedy);
+                    } while (c.moveToNext());
+                }
+                return remedies;
             }
-            return remedies;
         }
 
         protected void onPostExecute(List<Remedy> remediesData) {
@@ -283,6 +290,4 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
-
 }

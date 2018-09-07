@@ -25,7 +25,7 @@
     <string name="msg_yes">Yes</string>
     <string name="notification_title_remove_remedy">Removing remedy</string>
     <string name="msg_remove_remedy">Are you sure you want to remove this remedy from the list ?</string>
-    <string name="msg_next_doses">Next doses:</string>
+    <string name="msg_next_doses">Next doses: {?}</string>
     <string name="msg_tomorrow">Tomorrow</string>
     <string name="alarm_title">Alarm</string>
     <string name="alarm_content">Time for your dose of </string>
@@ -42,4 +42,19 @@
     <string name="content_authority">com.example.android.remedyme</string>
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
     <string name="credencial">309990967220-kktj83j03it101ginf29t7t17bt9ft6n.apps.googleusercontent.com</string>
+    <string name="logout_button_description">Logout from the app</string>
+    <string name="fab_description">Create a new Remedy reminder</string>
+    <string name="ed_remedyName_hint">Name of the Remedy</string>
+    <string name="startDate_contentDescription">Date to start notifications</string>
+    <string name="endDate_contentDescription">Date to end notifications</string>
+    <string name="firstDose_contentDescription">Hour of the first dose</string>
+    <string name="optionTime_contentDescription">Type of notification frequency</string>
+    <string name="optionTimeAmount_contentDescription">Notification frequency</string>
+    <string name="optionDoseType_contentDescription">Type of dose</string>
+    <string name="doseTypeAmount_hint">Remedy dose amount</string>
+    <string name="alarm_hint">Check to send notifications</string>
+    <string name="saveButton_contentDescription">Save new Remedy</string>
+    <string name="deleteButton_contentDescription">Remove Remedy from list</string>
+    <string name="editButton_contentDescription">Edit Remedy</string>
+    <string name="loginButton_contentDescription">Login to google account</string>
 </resources>

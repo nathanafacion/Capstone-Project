@@ -7,7 +7,6 @@ import android.app.TimePickerDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -186,9 +185,10 @@ public class RemedyCrudActivity extends AppCompatActivity implements DatePickerD
                 pendingIntent = PendingIntent.getBroadcast(getBaseContext(), 0, myIntent, 0);
 
                 Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(startDate + firstDoseTime);
 
                 alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() + 10000,
+                alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
                         pendingIntent);
             }
 
