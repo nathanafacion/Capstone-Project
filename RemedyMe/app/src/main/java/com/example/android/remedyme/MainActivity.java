@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
      RecyclerView rv;
     public static RemedyAdapter adapter;
-
+    public static Context context;
     private static List<Remedy> remediesList = new ArrayList<Remedy>();
     public static String userEmail;
 
@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         loadRemediesData(getApplicationContext());
 
+        context = getApplicationContext();
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             userEmail = extras.get("user").toString();
@@ -119,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            String description = "Hora de tomar remedio";
+            String description = getResources().getString(R.string.description_remedy);
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel("REMEDY_ME", "Remedio", importance);
             channel.setDescription(description);
@@ -174,9 +175,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             if (quant_times == 1) {
-                time = "Tomorrow " + time;
+                time = getResources().getString(R.string.msg_tomorrow) + time;
             }
-            holder.tv_next_times.setText("Next doses: "+ time);
+            holder.tv_next_times.setText(getResources().getString(R.string.msg_next_doses)+ time);
             holder.editButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -190,9 +191,9 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(final View view) {
                     new AlertDialog.Builder(view.getContext())
                             .setIcon(android.R.drawable.ic_dialog_alert)
-                            .setTitle("Removing remedy")
-                            .setMessage("Are you sure you want to remove this remedy from the list ?")
-                            .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                            .setTitle(getResources().getString(R.string.notification_title_remove_remedy))
+                            .setMessage(getResources().getString(R.string.msg_remove_remedy))
+                            .setPositiveButton(getResources().getString(R.string.msg_yes), new DialogInterface.OnClickListener()
                             {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -205,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
                                 }
 
                             })
-                            .setNegativeButton("No", null)
+                            .setNegativeButton(getResources().getString(R.string.msg_no), null)
                             .show();
                 }
             });

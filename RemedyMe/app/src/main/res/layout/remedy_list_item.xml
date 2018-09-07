@@ -29,7 +29,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="10dp"
-                android:text="12:00 - Remedy one (2 pills)"
                 android:textSize="16dp" />
 
             <ImageButton
@@ -37,7 +36,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="40dp"
-                android:background="#FFF"
+                android:background="@color/colorWhite"
                 app:layout_constraintRight_toRightOf="parent"
                 app:srcCompat="@drawable/ic_edit_black_24dp"
                 tools:layout_editor_absoluteY="0dp" />
@@ -46,7 +45,7 @@
                 android:id="@+id/bt_del"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:background="#FFF"
+                android:background="@color/colorWhite"
                 app:layout_constraintRight_toRightOf="parent"
                 app:srcCompat="@drawable/ic_delete_black_24dp"
                 tools:layout_editor_absoluteY="0dp" />
@@ -55,7 +54,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#EEE"
+            android:background="@color/colorLinearLayout"
             android:padding="10dp"
             app:layout_constraintTop_toBottomOf="@id/ll_title"
             tools:ignore="MissingConstraints">
@@ -64,7 +63,7 @@
                 android:id="@+id/tv_next_times"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Next times: 20:00 and 22:00" />
+            />
         </LinearLayout>
     </android.support.constraint.ConstraintLayout>
 

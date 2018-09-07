@@ -11,6 +11,8 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
 
+import com.example.android.remedyme.utils.Remedy;
+
 import java.sql.Time;
 import java.util.Calendar;
 
@@ -20,19 +22,21 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
     @Override
     public void onReceive(final Context context, Intent intent) {
 
+        Remedy remedy = (Remedy) intent.getExtras().get("remedy");
+
         Intent mainActivityIntent = new Intent(context, MainActivity.class);
         mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0 /* Request code */, mainActivityIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, "REMEDY_ME_WITH_SOUND");
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, "REMEDY_ME");
         Uri alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-        notificationBuilder.setSound(alarmUri).setContentText("Vamos tomar remédio");
+        notificationBuilder.setSound(alarmUri).setContentText(context.getResources().getString(R.string.description_remedy));
 
         notificationBuilder.setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("Alarme")
-                .setContentText("Hora de tomar remédio")
+                .setContentTitle(context.getResources().getString(R.string.alarm_title))
+                .setContentText(context.getResources().getString(R.string.alarm_content) + remedy.getRemedy_name())
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent);
 

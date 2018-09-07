@@ -9,6 +9,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -118,29 +119,31 @@ public class RemedyCrudActivity extends AppCompatActivity implements DatePickerD
 
     public boolean validation(){
         boolean hasError = false;
-        tv_remedyName.setTextColor(Color.parseColor("#000000"));
-        tv_times.setTextColor(Color.parseColor("#000000"));
-        tv_dose_type.setTextColor(Color.parseColor("#000000"));
-        tv_end_date.setTextColor(Color.parseColor("#000000"));
+        int black = ContextCompat.getColor(this, R.color.colorBlack);
+        int red = ContextCompat.getColor(this, R.color.colorRed);
+        tv_remedyName.setTextColor(black);
+        tv_times.setTextColor(black);
+        tv_dose_type.setTextColor(black);
+        tv_end_date.setTextColor(black);
         if(remedyName.getText().toString().isEmpty()){
-            Toast.makeText(getApplicationContext(), "Remedy Name should not be empty", Toast.LENGTH_SHORT).show();
-            tv_remedyName.setTextColor(Color.parseColor("#FF0000"));
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.notification_empty_remedy), Toast.LENGTH_SHORT).show();
+            tv_remedyName.setTextColor(red);
             return false;
         }
         if(Integer.valueOf(optionTimeAmount.getText().toString()) > 24 || Integer.valueOf(optionTimeAmount.getText().toString()) < 1){
-            Toast.makeText(getApplicationContext(), "Time quantity should be between 1 and 24", Toast.LENGTH_SHORT).show();
-            tv_times.setTextColor(Color.parseColor("#FF0000"));
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.notification_amount), Toast.LENGTH_SHORT).show();
+            tv_times.setTextColor(red);
             return false;
         }
         if(Integer.valueOf(doseTypeAmount.getText().toString()) < 1){
-            Toast.makeText(getApplicationContext(), "Time quantity should be less than 24", Toast.LENGTH_SHORT).show();
-            tv_dose_type.setTextColor(Color.parseColor("#FF0000"));
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.notification_timequantity), Toast.LENGTH_SHORT).show();
+            tv_dose_type.setTextColor(red);
             return false;
         }
         Date now =  new Date();
         if(startDate > endDate){
-            Toast.makeText(getApplicationContext(), "Date Start should before than end date", Toast.LENGTH_SHORT).show();
-            tv_end_date.setTextColor(Color.parseColor("#FF0000"));
+            Toast.makeText(getApplicationContext(),getResources().getString(R.string.notification_date), Toast.LENGTH_SHORT).show();
+            tv_end_date.setTextColor(red);
             return false;
         }
         return true;
@@ -179,6 +182,7 @@ public class RemedyCrudActivity extends AppCompatActivity implements DatePickerD
                 PendingIntent pendingIntent;
 
                 Intent myIntent = new Intent(this, AlarmReceiver.class);
+                myIntent.putExtra("remedy", remedy);
                 pendingIntent = PendingIntent.getBroadcast(getBaseContext(), 0, myIntent, 0);
 
                 Calendar calendar = Calendar.getInstance();
@@ -228,7 +232,7 @@ public class RemedyCrudActivity extends AppCompatActivity implements DatePickerD
 
     private String formatDate(Date date) {
         String myFormat = "dd/MM/yyyy"; //In which you need put here
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, new Locale("pt","BR"));
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, new Locale(getResources().getString(R.string.language),getResources().getString(R.string.country)));
         return sdf.format(date);
     }
 
@@ -270,7 +274,7 @@ public class RemedyCrudActivity extends AppCompatActivity implements DatePickerD
 
     private String formatTimeLabel(Date date) {
         String myFormat = "HH:mm"; //In which you need put here
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, new Locale("pt","BR"));
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, new Locale(getResources().getString(R.string.language),getResources().getString(R.string.country)));
         return sdf.format(date);
     }
 

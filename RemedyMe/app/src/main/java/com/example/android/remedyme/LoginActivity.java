@@ -118,7 +118,7 @@ public class LoginActivity  extends AppCompatActivity implements View.OnClickLis
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(getApplicationContext(), "Authentication failure", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), MainActivity.context.getResources().getString(R.string.notification_auth_failure), Toast.LENGTH_LONG).show();
                             //Snackbar.make(findViewById(R.id.main_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
                             updateUI(null);
                         }

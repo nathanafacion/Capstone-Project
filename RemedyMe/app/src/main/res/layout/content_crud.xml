@@ -14,7 +14,7 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:text="Add new remedy"
+        android:text="@string/new_remedy"
         android:textColor="@color/colorPrimaryDark"
         android:textStyle="bold"
         android:textSize="20dp"
@@ -36,7 +36,7 @@
         android:id="@+id/tv_l_remedy_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Remedy Name"
+        android:text="@string/label_remedy_name"
         android:layout_columnSpan="2"
         />
     <EditText
@@ -53,7 +53,7 @@
             android:id="@+id/tv_l_start_date"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:text="Start Date"
+            android:text="@string/label_start_date"
 
             />
 
@@ -63,7 +63,7 @@
             android:id="@+id/tv_l_end_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="End Date"
+            android:text="@string/label_end_date"
           />
 
         <Button
@@ -72,7 +72,7 @@
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:background="@color/colorPrimaryDark"
-            android:textColor="#FFF"
+            android:textColor="@color/colorWhite"
             android:onClick="openCalendarDialog"
              />
 
@@ -83,7 +83,7 @@
             android:layout_height="40dp"
             android:onClick="openCalendarDialog"
             android:background="@color/colorPrimaryDark"
-            android:textColor="#FFF"
+            android:textColor="@color/colorWhite"
             />
 
         <TextView
@@ -91,7 +91,7 @@
             android:id="@+id/tv_l_first_dose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Time of First dose"
+            android:text="@string/label_time_dose"
             android:layout_columnSpan="2"
 
              />
@@ -103,7 +103,7 @@
             android:layout_height="40dp"
             android:onClick="openTimePickerDialog"
             android:background="@color/colorPrimaryDark"
-            android:textColor="#FFF"
+            android:textColor="@color/colorWhite"
            />
 
 
@@ -112,7 +112,7 @@
             android:id="@+id/tv_l_times"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Times and quantity"
+            android:text="@string/label_times"
             android:layout_columnSpan="2"
            />
 
@@ -134,7 +134,7 @@
         android:id="@+id/tv_l_dose_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Type of dose and quantity"
+        android:text="@string/label_dose_type"
         android:layout_columnSpan="2"
         />
 
@@ -156,7 +156,7 @@
             android:id="@+id/tv_alarm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Notification with alarm"
+            android:text="@string/label_notification"
             android:layout_columnSpan="2"
             />
         <CheckBox android:id="@+id/cb_alarm"
@@ -170,7 +170,7 @@
             android:layout_height="wrap_content"
             android:textColor="@drawable/button_text_color"
             android:background="@color/colorAccent"
-            android:text="Save"
+            android:text="@string/bt_save"
             android:layout_columnSpan="2"
             android:onClick="saveNewRemedy"
             >

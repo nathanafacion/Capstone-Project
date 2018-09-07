@@ -3,6 +3,9 @@ package com.example.android.remedyme.utils;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.example.android.remedyme.MainActivity;
+import com.example.android.remedyme.R;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -137,7 +140,7 @@ public class Remedy implements Parcelable {
 
     public String dateToString(Date date) {
         String myFormat = "HH:mm"; //In which you need put here
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, new Locale("pt", "BR"));
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, new Locale((MainActivity.context.getResources().getString(R.string.language)), (MainActivity.context.getResources().getString(R.string.country))));
         return sdf.format(date.getTime());
     }
 
@@ -148,7 +151,7 @@ public class Remedy implements Parcelable {
 
     public Integer hourToInteger() {
         String myFormat = "HH"; //In which you need put here
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, new Locale("pt", "BR"));
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, new Locale((MainActivity.context.getResources().getString(R.string.language)), (MainActivity.context.getResources().getString(R.string.country))));
         return Integer.valueOf(sdf.format(getNextNotification()));
     }
 
@@ -169,7 +172,7 @@ public class Remedy implements Parcelable {
 
     public Integer minuteToInteger() {
         String myFormat = "mm"; //In which you need put here
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, new Locale("pt","BR"));
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, new Locale((MainActivity.context.getResources().getString(R.string.language)), (MainActivity.context.getResources().getString(R.string.country))));
         return Integer.valueOf(sdf.format(getNextNotification()));
     }
 
@@ -190,7 +193,7 @@ public class Remedy implements Parcelable {
         Integer nextDose = hourToInteger();
         // interval vai ser usado apenas caso seja
         int interval = 24 % quantTimes;
-        boolean isHourInterval = getTimes().equals("Time Interval hour");
+        boolean isHourInterval = getTimes().equals(MainActivity.context.getResources().getString(R.string.time_interval_hour));
         for (int i = 0; i < quantDose; i++) {
             if (isHourInterval) {
                 nextDose = nextDose + getQuant_times();

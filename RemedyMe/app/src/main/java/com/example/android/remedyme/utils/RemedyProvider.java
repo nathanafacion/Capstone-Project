@@ -24,6 +24,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
+import com.example.android.remedyme.MainActivity;
+import com.example.android.remedyme.R;
+
 public class RemedyProvider extends ContentProvider {
 
     public static final int CODE_REMEDY = 100;
@@ -98,7 +101,7 @@ public class RemedyProvider extends ContentProvider {
             }
 
             default:
-                throw new UnsupportedOperationException("Unknown uri: " + uri);
+                throw new UnsupportedOperationException(MainActivity.context.getResources().getString(R.string.notification_unknown) + uri);
         }
 
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
@@ -123,7 +126,7 @@ public class RemedyProvider extends ContentProvider {
                 break;
 
             default:
-                throw new UnsupportedOperationException("Unknown uri: " + uri);
+                throw new UnsupportedOperationException(MainActivity.context.getResources().getString(R.string.notification_unknown) + uri);
         }
 
         /* If we actually deleted any rows, notify that a change has occurred to this URI */
@@ -136,7 +139,7 @@ public class RemedyProvider extends ContentProvider {
 
     @Override
     public String getType(@NonNull Uri uri) {
-        throw new RuntimeException("We are not implementing getType in Sunshine.");
+        throw new RuntimeException(MainActivity.context.getResources().getString(R.string.notification_implementing));
     }
 
     @Override
@@ -156,7 +159,7 @@ public class RemedyProvider extends ContentProvider {
                 break;
 
             default:
-                throw new UnsupportedOperationException("Unknown uri: " + uri);
+                throw new UnsupportedOperationException(MainActivity.context.getResources().getString(R.string.notification_unknown) + uri);
         }
 
         /* If we actually deleted any rows, notify that a change has occurred to this URI */
